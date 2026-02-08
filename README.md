@@ -4,9 +4,14 @@ Visualizing Indonesia Earthquake Frequency Based on Magnitude Categories 2008-20
 📌 **Project Overview**
 This analysis aims to map earthquake patterns in Indonesia over the past 15 years (2008-2023) using Python for data processing and clustering, and Tableau for storytelling.
 
+
 ### 📊 Interactive Dashboard
-[![Tableau Dashboard](DAFTAR_GAMBAR_KAMU.png)](https://public.tableau.com/app/profile/johannes.wuisan/viz/UnveilingIndonesiasSeismicRisksGeospatialClusteringInsights/SeismicInsightAGeospatialandMachineLearningStudyofIndonesiasEarthquakeRisks?publish=yes)
-*Click the image above to view the interactive dashboard.
+
+<a href="https://public.tableau.com/app/profile/johannes.wuisan/viz/UnveilingIndonesiasSeismicRisksGeospatialClusteringInsights/SeismicInsightAGeospatialandMachineLearningStudyofIndonesiasEarthquakeRisks?publish=yes">
+  <img src="frontpage.jpg" width="600" alt="Tableau Dashboard Preview">
+</a>
+
+*Click the image above to view the interactive dashboard.*
 
 ---
 
