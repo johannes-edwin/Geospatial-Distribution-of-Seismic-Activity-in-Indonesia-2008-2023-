@@ -1,18 +1,18 @@
 # Geospatial-Distribution-of-Seismic-Activity-in-Indonesia-2008-2023-
-Visualizing Indonesia Earthquake Frequency Based on Magnitude Categories 2008-2023
+Visualising Indonesia Earthquake Frequency Based on Magnitude Categories 2008-2023
 
 📌 Project Overview
-Analisis ini bertujuan untuk memetakan pola gempa bumi di Indonesia selama 15 tahun terakhir (2008-2023) menggunakan Python untuk pengolahan data dan clustering, serta Tableau untuk storytelling.
+This analysis aims to map earthquake patterns in Indonesia over the past 15 years (2008-2023) using Python for data processing and clustering, and Tableau for storytelling.
 
 🚀 Key Features
-Machine Learning: K-Means Clustering untuk mengidentifikasi zona risiko berdasarkan lokasi, magnitudo, dan kedalaman.
+Machine Learning: K-Means Clustering to identify risk zones based on location, magnitude, and depth.
 
-Interactive Map: Visualisasi spasial menggunakan Folium.
+Interactive Map: Spatial visualization using Folium.
 
-Data Storytelling: [Link Dashboard Tableau Public Kamu Disini]
+Data Storytelling: [Link Dashboard Tableau Public]
 
 💡 Initial Hypothesis & Result
-"Meskipun korelasi linear rendah, lokasi geografis memiliki pengaruh kategorikal yang lebih kuat terhadap magnitudo dibandingkan kedalaman." Result: ACCEPTED. (Penjelasan singkat hasil temuanmu).
+"Despite low linear correlation, geographic location has a stronger categorical influence on magnitude than depth." Result: ACCEPTED. (A brief explanation of your findings).
 
 🛠️ Tech Stack
 Python (Pandas, Folium, Scikit-Learn)
