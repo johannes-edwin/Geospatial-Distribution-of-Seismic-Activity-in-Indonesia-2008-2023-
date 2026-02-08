@@ -9,7 +9,7 @@ Machine Learning: K-Means Clustering to identify risk zones based on location, m
 
 Interactive Map: Spatial visualization using Folium.
 
-Data Storytelling: [Link Dashboard Tableau Public]
+Data Storytelling: (https://public.tableau.com/app/profile/johannes.wuisan/viz/UnveilingIndonesiasSeismicRisksGeospatialClusteringInsights/SeismicInsightAGeospatialandMachineLearningStudyofIndonesiasEarthquakeRisks?publish=yes))
 
 💡 Initial Hypothesis & Result
 "Despite low linear correlation, geographic location has a stronger categorical influence on magnitude than depth." Result: ACCEPTED. (A brief explanation of your findings).
