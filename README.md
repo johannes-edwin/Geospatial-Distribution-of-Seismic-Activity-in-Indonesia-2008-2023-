@@ -1,25 +1,35 @@
-# Geospatial-Distribution-of-Seismic-Activity-in-Indonesia-2008-2023-
-Visualising Indonesia Earthquake Frequency Based on Magnitude Categories 2008-2023
+# 🌏 Geospatial Distribution of Seismic Activity in Indonesia (2008-2023)
+Visualizing Indonesia Earthquake Frequency Based on Magnitude Categories 2008-2023
 
-📌 Project Overview
+📌 **Project Overview**
 This analysis aims to map earthquake patterns in Indonesia over the past 15 years (2008-2023) using Python for data processing and clustering, and Tableau for storytelling.
 
-🚀 Key Features
-Machine Learning: K-Means Clustering to identify risk zones based on location, magnitude, and depth.
+### 📊 Interactive Dashboard
+[![Tableau Dashboard](DAFTAR_GAMBAR_KAMU.png)](https://public.tableau.com/app/profile/johannes.wuisan/viz/UnveilingIndonesiasSeismicRisksGeospatialClusteringInsights/SeismicInsightAGeospatialandMachineLearningStudyofIndonesiasEarthquakeRisks?publish=yes)
+*Klik gambar di atas untuk melihat dashboard interaktif.*
 
-Interactive Map: Spatial visualisation using Folium.
+---
 
-Data Storytelling: (https://public.tableau.com/app/profile/johannes.wuisan/viz/UnveilingIndonesiasSeismicRisksGeospatialClusteringInsights/SeismicInsightAGeospatialandMachineLearningStudyofIndonesiasEarthquakeRisks?publish=yes))
+### 🚀 Key Features
+* **Machine Learning:** K-Means Clustering to identify risk zones based on location, magnitude, and depth.
+* **Interactive Map:** Spatial visualisation using Folium.
+* **Data Storytelling:** Comprehensive insights via Tableau.
 
-### 🛠️ Resources
-[![Kaggle](https://img.shields.io/badge/Kaggle-Dataset-blue?style=flat-square&logo=kaggle)](https://www.kaggle.com/datasets/kekavigi/earthquakes-in-indonesia)
+### 🛠️ Resources & Tech Stack
+* [![Kaggle](https://img.shields.io/badge/Kaggle-Dataset-blue?style=flat-square&logo=kaggle)](https://www.kaggle.com/datasets/kekavigi/earthquakes-in-indonesia)
+* **Python** (Pandas, Folium, Scikit-Learn)
+* **Tableau** (Data Storytelling)
+* **Jupyter Notebook**
 
-💡 Initial Hypothesis & Result
-"Despite low linear correlation, geographic location has a stronger categorical influence on magnitude than depth." Result: ACCEPTED. (A brief explanation of your findings).
+---
 
-🛠️ Tech Stack
-Python (Pandas, Folium, Scikit-Learn)
+### 💡 Initial Hypothesis & Result
+> "Despite low linear correlation, geographic location has a stronger categorical influence on magnitude than depth."
 
-Tableau (Data Storytelling)
+**Result: [ACCEPTED]**
+* **Statistical Gap:** The linear correlation between coordinates and magnitude is low ($R^2 \approx 0$), meaning raw numbers can't predict strength.
+* **Spatial Influence:** However, visual clusters show that $M > 6.0$ events are "locked" at specific tectonic boundaries (Sunda Arc & Molucca Sea). This proves geography is a stronger **categorical** predictor than depth alone.
 
-Jupyter Notebook
+### 📍 Clustering Visualization (Python Folium)
+![Clustering Result](FOLDER_KAMU/NAMA_GAMBAR_MAP.png)
+*Visualisasi hasil K-Means Clustering menggunakan Folium.*
