@@ -1,0 +1,193 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib
+import matplotlib.pyplot as plt
+import os
+import sklearn
+from sklearn.cluster import KMeans # Here is where you import the k-means algorithm from scikit-learn.
+import pylab as pl # PyLab is a convenience module that bulk imports matplotlib.
+
+# This option ensures that the graphs you create are displayed within the notebook without the need to "call" them specifically.
+%matplotlib inline
+
+# Define path
+path = r'C:\Users\johan\Documents\Indonesia Integrated Seismic Risk Analysis'
+
+path
+
+print(path)
+
+# Load data 
+path = r'C:\Users\johan\Documents\Indonesia Integrated Seismic Risk Analysis'
+df = pd.read_csv(os.path.join(path, '02 Data', 'Prepared data', 'katalog_gempa_cleaned.csv'))
+
+df.shape
+
+df.head()
+
+df.dtypes
+
+# Membuat daftar kolom yang ingin dihapus
+columns_to_drop = ['Date', 'Time', 'Location', 'Full_DateTime', 'Magnitude_Category']
+
+# Menghapus kolom tersebut dan menyimpannya di dataframe baru agar data asli tetap aman
+df_clustering = df.drop(columns=columns_to_drop)
+
+# Menghapus nilai kosong (NaN) agar K-Means tidak error
+df_clustering = df_clustering.dropna()
+
+# Cek hasil tipe datanya, pastikan semuanya sudah float64 atau int64
+print(df_clustering.dtypes)
+
+# 2 The Elbow technique¶
+
+# Di bagian Elbow Technique, ganti menjadi seperti ini:
+num_cl = range(1, 10)
+kmeans = [KMeans(n_clusters=i) for i in num_cl]
+score = [kmeans[i].fit(df_clustering).score(df_clustering) for i in range(len(kmeans))]
+
+# Plot hasilnya
+pl.plot(num_cl, score)
+pl.show()
+
+# 3. k-means clustering
+
+# 1. Tentukan jumlah cluster (misal 3) berdasarkan grafik elbow
+kmeans = KMeans(n_clusters=3) 
+
+# 2. Fit ke data numerik
+kmeans.fit(df_clustering)
+
+# 3. Masukkan hasilnya ke dataframe asli
+df['cluster'] = kmeans.labels_
+
+# Mendefinisikan model dengan jumlah cluster yang diinginkan (misal: 3)
+kmeans = KMeans(n_clusters=3, random_state=42)
+
+# Cukup ketik nama variabelnya di baris terakhir untuk menampilkannya
+kmeans
+
+# 1. Pastikan kolom yang tidak dibutuhkan sudah dibuang (seperti instruksi sebelumnya)
+columns_to_drop = ['Date', 'Time', 'Location', 'Full_DateTime', 'Magnitude_Category']
+df_clustering = df.drop(columns=columns_to_drop)
+df_clustering = df_clustering.dropna()
+
+# 2. Definisikan model (Gunakan angka cluster dari grafik elbow Anda, misal 3)
+kmeans = KMeans(n_clusters=3)
+
+# 3. Jalankan fit_predict PADA df_clustering (Hanya angka)
+# JANGAN gunakan 'df' di dalam kurung ini
+clusters = kmeans.fit_predict(df_clustering)
+
+# 4. Masukkan hasilnya kembali ke dataframe asli agar bisa dibaca
+df['clusters'] = clusters
+
+# Tampilkan hasilnya
+df.head()
+
+df_clustering.head()
+
+df['clusters'].value_counts()
+
+# Pastikan Anda menggunakan kolom yang ada di dataset gempa Anda
+# x = Depth (Kedalaman), y = Magnitude (Kekuatan)
+
+plt.figure(figsize=(12,8))
+
+# Kita menggunakan df karena kmeans.labels_ sudah kita masukkan ke dalam df sebelumnya
+ax = sns.scatterplot(x=df['Depth'], y=df['Magnitude'], hue=kmeans.labels_, s=100) 
+
+# Menghapus grid di latar belakang agar terlihat bersih seperti contoh
+ax.grid(False) 
+
+# Memberi label sesuai dengan variabel gempa
+plt.xlabel('Depth (Kedalaman)') 
+plt.ylabel('Magnitude (Kekuatan Gempa)') 
+
+# Menampilkan grafik
+plt.show()
+
+# labelling
+df.loc[df['clusters'] == 2, 'cluster_name'] = 'Dark Purple'
+df.loc[df['clusters'] == 1, 'cluster_name'] = 'Pink'
+df.loc[df['clusters'] == 0, 'cluster_name'] = 'Purple'
+
+# Statistic
+interpretation = df.groupby('cluster_name').agg({
+    'Depth':['mean', 'median'], 
+    'Magnitude':['mean', 'median'],
+    'Latitude':['mean'],
+    'Longitude':['mean']
+})
+
+print(interpretation)
+
+df_clustering.head()
+
+# Based on Conclusion above I analyz another cluster below:
+
+# Determine range amount of cluster (1 sampai 10)
+num_cl = range(1, 10)
+kmeans = [KMeans(n_clusters=i) for i in num_cl]
+
+# Calculation score for each cluster
+# ensure use df_clustering, not df
+score = [kmeans[i].fit(df_clustering).score(df_clustering) for i in range(len(kmeans))]
+
+# Elbow graph
+pl.plot(num_cl, score)
+pl.xlabel('Amount Cluster')
+pl.ylabel('Score')
+pl.title('Curve Elbow')
+pl.show()
+
+# 1. Defining a model with 3 clusters
+kmeans = KMeans(n_clusters=3, random_state=42)
+
+# 2. Running algorithms on numeric data
+# fit_predict should procude label (0, 1, or 2) for each data row
+df['clusters'] = kmeans.fit_predict(df_clustering)
+
+# 3. See parameter model that produce
+kmeans
+
+# 1. Set the chart size
+plt.figure(figsize=(12,8))
+
+# 2. Creating a scatterplot based on Longitude and Latitude
+# We use 'hue' to differentiate colors based on the clusters that have been formed.
+ax = sns.scatterplot(x=df['Longitude'], y=df['Latitude'], hue=df['clusters'], s=100, palette='viridis')
+
+# 3. Tidy up the look
+ax.grid(False) # Remove checkered lines in the background
+plt.xlabel('Longitude (Garis Bujur)')
+plt.ylabel('Latitude (Garis Lintang)')
+plt.title('Earthquake Cluster Localization Based on Geographic Coordinates')
+
+# Displays a legend for the cluster colors.
+plt.legend(title='Cluster', loc='upper right')
+
+plt.show()
+
+
+import folium
+
+# Create a base map at the midpoint of your data
+m = folium.Map(location=[df['Latitude'].mean(), df['Longitude'].mean()], zoom_start=8)
+
+# Color for each cluster
+colors = {'Dark Purple': 'purple', 'Pink': 'orange', 'Purple': 'darkpurple'}
+
+# Adding points to the map
+for i, row in df.iterrows():
+    folium.CircleMarker(
+        location=[row['Latitude'], row['Longitude']],
+        radius=5,
+        color=colors.get(row['cluster_name'], 'blue'),
+        fill=True,
+        popup=f"Mag: {row['Magnitude']} | Cluster: {row['cluster_name']}"
+    ).add_to(m)
+
+# show map
+m
