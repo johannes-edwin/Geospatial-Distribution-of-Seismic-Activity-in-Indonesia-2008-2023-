@@ -8,7 +8,7 @@ This analysis aims to map earthquake patterns in Indonesia over the past 15 year
 ### 📊 Interactive Dashboard
 
 <a href="https://public.tableau.com/app/profile/johannes.wuisan/viz/UnveilingIndonesiasSeismicRisksGeospatialClusteringInsights/SeismicInsightAGeospatialandMachineLearningStudyofIndonesiasEarthquakeRisks?publish=yes">
-  <img src="frontpage.jpg" width="600" alt="Tableau Dashboard Preview">
+  <img src="https://D:\20-CF\2-Data_Immersion\6-DB\7\logo\frontpage.jpg" width="600">
 </a>
 
 *Click the image above to view the interactive dashboard.*
