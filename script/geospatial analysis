@@ -1,0 +1,159 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib
+import os
+import folium
+import json
+
+# This command prompts matplotlib visuals to appear in the notebook 
+
+%matplotlib inline
+
+# Define path
+
+path = r'C:\Users\johan\Documents\Indonesia Integrated Seismic Risk Analysis'
+
+print(path)
+
+# 1. Load Data 
+
+df = pd.read_csv(os.path.join(path, '02 Data', 'Prepared Data', 'katalog_gempa_cleaned.csv'))
+
+df.dtypes
+
+# 1. Mengubah Full_DateTime menjadi tipe datetime resmi
+df['Full_DateTime'] = pd.to_datetime(df['Full_DateTime'])
+
+# 2. Mengubah Magnitude_Category menjadi tipe category (opsional tapi bagus untuk efisiensi)
+df['Magnitude_Category'] = df['Magnitude_Category'].astype('category')
+
+# Cek kembali tipe datanya
+print(df.dtypes)
+
+# Membuat fungsi untuk melabeli wilayah utama Indonesia
+def create_region(lon):
+    if lon < 105:
+        return 'Sumatera'
+    elif 105 <= lon < 114:
+        return 'Jawa'
+    elif 114 <= lon < 119:
+        return 'Kalimantan & Sulawesi'
+    elif 119 <= lon < 127:
+        return 'Sulawesi & Nusa Tenggara'
+    else:
+        return 'Papua & Maluku'
+
+# Menerapkan fungsi ke kolom Longitude
+df['Region'] = df['Longitude'].apply(create_region)
+
+# Cek hasil distribusi data per wilayah
+print(df['Region'].value_counts())
+
+# Membuat data agregat untuk di-plot
+data_to_plot = df.groupby('Region')['Magnitude'].mean().reset_index()
+
+# Menampilkan hasil agregasi
+print(data_to_plot)
+
+import folium
+
+# Membuat objek peta dasar
+# Koordinat [-2.5, 118] adalah titik tengah Indonesia secara umum
+map_indonesia = folium.Map(location=[-2.5, 118], zoom_start=5)
+
+# Menampilkan peta (saat ini masih kosong/basemap saja)
+map_indonesia
+
+Import json
+
+with open(r'C:\Users\johan\Documents\Indonesia Integrated Seismic Risk Analysis\02 Data\Original Data\indonesia-provinces-polygon.json') as f: geojson_data = json.load(f)
+
+# Melihat kunci apa saja yang ada di fitur pertama
+print(geojson_data['features'][0]['properties'].keys())
+
+# Melihat contoh isinya
+print(geojson_data['features'][0]['properties'])
+
+# Ubah data di kolom 'Region' menjadi huruf besar
+data_to_plot['Region'] = data_to_plot['Region'].str.upper()
+
+# 1. Definisikan path filenya terlebih dahulu
+country_geo = os.path.join(path, '02 Data', 'Original Data', 'indonesia-provinces-polygon.json')
+
+# 2. Pastikan data_to_plot juga sudah siap (dari langkah agregasi sebelumnya)
+# data_to_plot = ... (pastikan sel agregasi sudah dijalankan)
+
+# 3. Baru buat petanya
+map_indo = folium.Map(location=[-2.5, 118], zoom_start=5)
+
+folium.Choropleth(
+    geo_data = country_geo, 
+    data = data_to_plot,
+    columns = ['Region', 'Magnitude'],
+    key_on = 'feature.properties.Propinsi', 
+    fill_color = 'YlOrRd', 
+    fill_opacity = 0.7, 
+    line_opacity = 0.2,
+    legend_name = 'Rata-rata Magnitudo Gempa'
+).add_to(map_indo)
+
+map_indo
+
+# Load data cleaned
+df = pd.read_csv(os.path.join(path, '02 Data', 'Prepared data', 'katalog_gempa_cleaned.csv'))
+
+# Buat fungsi Region (sesuaikan dengan Task 6.2 kamu)
+def label_region(lon):
+    if lon < 105: return 'SUMATERA'
+    elif 105 <= lon < 114: return 'JAWA'
+    elif 114 <= lon < 120: return 'KALIMANTAN'
+    elif 120 <= lon < 127: return 'SULAWESI'
+    else: return 'PAPUA'
+
+df['Region_Group'] = df['Longitude'].apply(label_region)
+
+# Hitung rata-rata magnitudo per kelompok wilayah
+df_agg = df.groupby('Region_Group')['Magnitude'].mean().reset_index()
+
+# Ambil semua nama provinsi dari file JSON kamu
+with open(os.path.join(path, '02 Data', 'Original Data', 'indonesia-provinces-polygon.json')) as f:
+    geo_data = json.load(f)
+
+provinces_in_json = [feature['properties']['Propinsi'] for feature in geo_data['features']]
+
+# Buat dataframe bantuan untuk menyambungkan Group ke Provinsi
+def match_prov(prov_name):
+    p = prov_name.upper()
+    if any(x in p for x in ['SUMATERA', 'RIAU', 'JAMBI', 'ACEH', 'LAMPUNG', 'BANGKA']): return 'SUMATERA'
+    if any(x in p for x in ['JAWA', 'YOGYAKARTA', 'BANTEN', 'JAKARTA']): return 'JAWA'
+    if 'KALIMANTAN' in p: return 'KALIMANTAN'
+    if 'SULAWESI' in p: return 'SULAWESI'
+    return 'PAPUA' # Sisanya masuk kelompok Timur/Papua
+
+# Buat dataframe final untuk plotting
+plot_df = pd.DataFrame({'Propinsi': provinces_in_json})
+plot_df['Region_Group'] = plot_df['Propinsi'].apply(match_prov)
+
+# Gabungkan dengan hasil rata-rata magnitudo tadi
+plot_df = plot_df.merge(df_agg, on='Region_Group', how='left')
+
+# Inisialisasi peta
+map_indo = folium.Map(location=[-2.5, 118], zoom_start=5)
+
+# Path JSON
+json_path = os.path.join(path, '02 Data', 'Original Data', 'indonesia-provinces-polygon.json')
+
+# Tambahkan Choropleth
+folium.Choropleth(
+    geo_data = json_path,
+    data = plot_df,
+    columns = ['Propinsi', 'Magnitude'],
+    key_on = 'feature.properties.Propinsi', # Kunci yang kita temukan tadi!
+    fill_color = 'YlOrRd',
+    fill_opacity = 0.7,
+    line_opacity = 0.2,
+    legend_name = 'Rata-rata Magnitudo per Wilayah'
+).add_to(map_indo)
+
+map_indo
