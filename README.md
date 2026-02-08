@@ -7,9 +7,12 @@ This analysis aims to map earthquake patterns in Indonesia over the past 15 year
 🚀 Key Features
 Machine Learning: K-Means Clustering to identify risk zones based on location, magnitude, and depth.
 
-Interactive Map: Spatial visualization using Folium.
+Interactive Map: Spatial visualisation using Folium.
 
 Data Storytelling: (https://public.tableau.com/app/profile/johannes.wuisan/viz/UnveilingIndonesiasSeismicRisksGeospatialClusteringInsights/SeismicInsightAGeospatialandMachineLearningStudyofIndonesiasEarthquakeRisks?publish=yes))
+
+### 🛠️ Resources
+[![Kaggle](https://img.shields.io/badge/Kaggle-Dataset-blue?style=flat-square&logo=kaggle)]([URL_LINK_KAGGLE_KAMU_DISINI](https://www.kaggle.com/datasets/kekavigi/earthquakes-in-indonesia))
 
 💡 Initial Hypothesis & Result
 "Despite low linear correlation, geographic location has a stronger categorical influence on magnitude than depth." Result: ACCEPTED. (A brief explanation of your findings).
